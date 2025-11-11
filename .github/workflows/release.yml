@@ -22,11 +22,8 @@ jobs:
       - name: Validate action.yml syntax
         run: |
           echo "Validating action.yml syntax..."
-          # Use actionlint to validate the action
-          docker run --rm -v $(pwd):/repo -w /repo rhysd/actionlint:latest -color /repo/action.yml || true
-          
-          # Basic YAML syntax check
           python3 -c "import yaml; yaml.safe_load(open('action.yml'))" && echo "✓ action.yml is valid YAML"
+          python3 -c "import yaml; data = yaml.safe_load(open('action.yml')); assert 'name' in data and 'description' in data and 'runs' in data, 'Missing required fields'; assert data['runs']['using'] == 'composite', 'Must be composite action'" && echo "✓ action.yml has required composite action fields"
       
       - name: Validate version format
         run: |

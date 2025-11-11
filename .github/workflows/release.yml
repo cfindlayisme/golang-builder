@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "Validating action.yml syntax..."
           # Use actionlint to validate the action
-          docker run --rm -v $(pwd):/repo -w /repo rhysd/actionlint:latest actionlint action.yml || true
+          docker run --rm -v $(pwd):/repo -w /repo rhysd/actionlint:latest -color /repo/action.yml || true
           
           # Basic YAML syntax check
           python3 -c "import yaml; yaml.safe_load(open('action.yml'))" && echo "✓ action.yml is valid YAML"
